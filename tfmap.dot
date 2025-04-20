@@ -1,5 +1,0 @@
-digraph tfmap {
-  rankdir=LR;
-  node [shape=box style=filled fillcolor=lightgrey fontname=Helvetica];
-  "aws_s3_bucket.example" [label="aws_s3_bucket\nexample" fillcolor="lightblue"];
-}
