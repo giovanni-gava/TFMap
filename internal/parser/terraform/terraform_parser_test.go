@@ -1,37 +1,32 @@
 package terraform_test
 
-import {
-
-	"fmt"
-	"os"
+import (
 	"path/filepath"
 	"testing"
 
 	"github.com/giovanni-gava/tfmap/internal/parser/terraform"
 	"github.com/stretchr/testify/assert"
+)
 
-}
-
-func TestTerraformParser_ValidDirectory(t *testing.T) {
+func TestTerraformParser_ParseValidTFFile(t *testing.T) {
 	parser := terraform.NewParser()
-    // Testing directory with simulated .tf files
-	testPath := filepath.Join("testdata", "basic")
+	testPath := filepath.Join("testdata", "unit", "basic")
 
-	if _, err := os.Stat(testPath); os.IsNotExist(err) {
-		t.Fatalf("failed to find test directory: %v", testPath)
-	}
+	graph, err := parser.Parse(testPath)
+	assert.NoError(t, err, "expected no error from parser")
+	assert.NotNil(t, graph, "expected a non-nil graph")
 
-	graph, err:= parser.Parse(testPath)
+	assert.Equal(t, 1, len(graph.Resources), "expected one resource in the graph")
 
-	assert.NoError(t, err, "expected no error when parsing valid directory")
-	assert.NoNile(t, graph, "expected a non-nil graph")
-	assert.GreaterOrEqual(t, len(graph.Resources), 1, "expected at least one resource in the graph")
-}
+	resource, ok := graph.Resources["aws_s3_bucket.example"]
+	assert.True(t, ok, "resource ID aws_s3_bucket.example should exist")
 
-func TestTerraformParser_InvalidPath(t *testing.T) {
-	parser := terraform.NewParser()
+	assert.Equal(t, "aws_s3_bucket", resource.Type)
+	assert.Equal(t, "example", resource.Name)
+	assert.Equal(t, "tfmap-example-bucket", resource.Attributes["bucket"])
+	assert.Equal(t, "private", resource.Attributes["acl"])
 
-	_, err := parser.Parse("invalid/path")
-
-	assert.Error(t, err, "expected an error when parsing an invalid path")
+	// Tags
+	assert.Equal(t, "ExampleBucket", resource.Tags["Name"])
+	assert.Equal(t, "Dev", resource.Tags["Environment"])
 }

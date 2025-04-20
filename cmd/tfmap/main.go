@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/giovanni-gava/tfmap/internal/exporter/dot"
 	"github.com/giovanni-gava/tfmap/internal/parser/terraform"
 	"github.com/urfave/cli/v2"
 )
@@ -67,8 +68,14 @@ func main() {
 						if err := encoder.Encode(infraGraph); err != nil {
 							return fmt.Errorf("failed to write graph: %w", err)
 						}
+						fmt.Printf("✅ InfraGraph exported to %s (JSON format)\n", outputPath)
 
-						fmt.Printf("✅ InfraGraph exported to %s\n", outputPath)
+					case "dot":
+						exporter := dot.NewExporter()
+						if err := exporter.Export(infraGraph, outputPath); err != nil {
+							return fmt.Errorf("failed to export DOT: %w", err)
+						}
+						fmt.Printf("✅ InfraGraph exported to %s (DOT format)\n", outputPath)
 
 					default:
 						return fmt.Errorf("format %s not supported yet", format)
