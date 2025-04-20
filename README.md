@@ -1,7 +1,7 @@
 # TFMap – IaC Intelligence Engine
 
 **Created by [Giovanni Colognesi](https://github.com/giovanni-gava)**  
-Infrastructure Auditor • DevOps Strategist • Open Source Builder
+Platform Engineer • DevOps Strategist • Open Source Builder • Creative Mind
 
 ---
 
