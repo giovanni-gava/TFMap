@@ -7,9 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/giovanni-gava/tfmap/internal/parser/terraform"
 	"github.com/urfave/cli/v2"
-
-	"github.com/giovanni-gava/tfmap/internal/graph"
 )
 
 func main() {
@@ -49,19 +48,14 @@ func main() {
 
 					fmt.Printf("🔍 Parsing infrastructure from %s...\n", absPath)
 
-					// ⚠️ Stub: Replace with actual parser in future step
-					graph := graph.NewInfraGraph()
+					parser := terraform.NewParser()
+					infraGraph, err := parser.Parse(absPath)
+					if err != nil {
+						return fmt.Errorf("failed to parse infrastructure: %w", err)
+					}
 
-					// Simulação de recurso
-					graph.AddResource(&graph.ResourceNode{
-						ID:         "aws_instance.web",
-						Type:       "aws_instance",
-						Name:       "web",
-						Attributes: map[string]interface{}{"instance_type": "t3.micro"},
-						Tags:       map[string]string{"env": "dev"},
-					})
-
-					if format == "json" {
+					switch format {
+					case "json":
 						file, err := os.Create(outputPath)
 						if err != nil {
 							return fmt.Errorf("failed to create output file: %w", err)
@@ -70,11 +64,13 @@ func main() {
 
 						encoder := json.NewEncoder(file)
 						encoder.SetIndent("", "  ")
-						if err := encoder.Encode(graph); err != nil {
+						if err := encoder.Encode(infraGraph); err != nil {
 							return fmt.Errorf("failed to write graph: %w", err)
 						}
+
 						fmt.Printf("✅ InfraGraph exported to %s\n", outputPath)
-					} else {
+
+					default:
 						return fmt.Errorf("format %s not supported yet", format)
 					}
 
