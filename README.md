@@ -1,51 +1,96 @@
 # TFMap – IaC Intelligence Engine
 
-TFMap is a GitOps-ready, open-source engine for intelligent analysis and visualization of infrastructure as code.
+**Created by [Giovanni Colognesi](https://github.com/giovanni-gava)**  
+Infrastructure Auditor • DevOps Strategist • Open Source Builder
 
-Built for DevOps, SRE, SecOps, and Platform Engineers who need clarity, security, and architecture-level insights from Terraform and Terragrunt configurations.
+---
 
-## 🌍 What it does
+TFMap is an open-source, GitOps-ready platform for intelligent analysis and visual representation of infrastructure as code (IaC). Built to empower DevOps, SRE, Platform Engineering, and Security teams to deeply understand and audit their Terraform and Terragrunt-based infrastructure.
 
-- Parses `.tf`, `.tf.json`, `terragrunt.hcl`, `tfstate`, and `tfplan`
-- Builds a semantic graph of resources, modules, outputs, and dependencies
-- Detects risks (IAM wildcards, missing tags, implicit dependencies)
-- Exports to `.json`, `.dot`, `.md`, `.svg`
-- GitHub/GitLab CI-ready
-- CLI-first, API-ready, UI-compatible
+> "Infrastructure isn't just code — it's a system of truth. TFMap is the engine that reveals it."
 
-## 📦 Getting Started
+---
+
+## ✅ Core Features (Delivered)
+
+- 🔍 **Deep parser** for `.tf` files using `hcl/v2`
+- 🧠 Internal `InfraGraph` model with nodes, edges, and metadata
+- 📦 Modular CLI with subcommands and flags
+- 🎨 Exporter `.dot` for Graphviz visualizations
+- 🧪 Unit tests for parser and exporter
+
+---
+
+## 🚧 Roadmap (Fase 1 – Core Engine & CLI)
+
+| Fase 1 Microetapas                   | Status     |
+|--------------------------------------|------------|
+| Parser real de `.tf` com HCL         | ✅ Pronto  |
+| CLI `parse` funcional                | ✅ Pronto  |
+| Exportador `.json` e `.dot`          | ✅ Pronto  |
+| Linter de boas práticas (`tags`)     | 🚧 Em breve |
+| Exportador `.md`, `.svg`, `.yaml`    | 🔜          |
+| Documentação de arquitetura          | 🔜          |
+
+---
+
+## 📦 Installation
 
 ```bash
 go install github.com/giovanni-gava/tfmap/cmd/tfmap@latest
+```
 
-tfmap parse --input ./infra --format json --output ./tfmap.json
+---
 
+## 🚀 Usage
 
-💡 Why TFMap?
-Terraform shows what you wrote.
-TFMap shows what you built — and where it could fail.
+```bash
+tfmap parse --input ./infra --format dot --output graph.dot
+dot -Tsvg graph.dot -o graph.svg
+```
 
-📈 Roadmap
-✅ CLI-based parser and graph exporter
+---
 
-🛠️ Terraform + Terragrunt cross-parsing
+## 📊 Example Output
 
-🔒 Security linting (IAM, exposure, drift)
+![graph example](./graph.svg)
 
-🌐 REST API (optional, local or SaaS-ready)
+---
 
-🖥️ Web UI (zoomable, filterable graph explorer)
+## 🔧 Architecture Overview
 
-🤖 GitHub Bot for IaC Pull Requests
+```
+tfmap/
+├── cmd/              # CLI entrypoint
+├── internal/
+│   ├── parser/       # Terraform, Terragrunt, tfplan, tfstate
+│   ├── graph/        # InfraGraph model
+│   ├── exporter/     # dot, json, yaml
+│   ├── lint/         # rules, engine, result types
+├── testdata/         # test infrastructure
+```
 
-📊 Audit reports and compliance artifacts
+---
 
-🧠 License
-Apache 2.0
+## 🧠 Why TFMap?
 
-🗣️ Contribute
-Open an issue, submit a PR or start a discussion — all feedback welcome.
-Let’s build the future of infrastructure understanding.
+Terraform tells you what you wrote.
+TFMap tells you what you built — and where you're exposed.
 
-Built with purpose. Built for teams. Built for insight.
-— The TFMap Project.
+---
+
+## 💬 Contribute
+
+TFMap is in active development.
+PRs, issues, feedback, and ideas are welcome — join the mission.
+
+---
+
+## 📜 License
+
+Apache 2.0 License — use freely and responsibly.
+
+---
+
+**Made with purpose by [Giovanni Colognesi](https://linkedin.com/in/giovanni-gava-21338115a)**  
+Let’s turn infrastructure into knowledge.
