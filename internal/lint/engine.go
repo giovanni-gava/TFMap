@@ -24,9 +24,9 @@ func RunAll(g *graph.InfraGraph) []LintResult {
 func rules() []RuleFunc {
 	return []RuleFunc{
 		checkMissingTags,
+		checkWildcardIAM,
 		// futuras regras:
 		// checkWildcardIAM,
 		// checkImplicitDependencies,
 	}
 }
-
